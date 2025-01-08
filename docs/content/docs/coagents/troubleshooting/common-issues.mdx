@@ -65,6 +65,70 @@ If you have already done that, you can check the following:
     </Accordion>
 </Accordions>
 
+## Using Developer Console for Troubleshooting
+
+One useful tool for troubleshooting CopilotKit "actions", "readable", and "messages" is the browser Developer Console.
+
+### Open Developer Console
+To access the Developer Console:
+- **Chrome / Edge**: Press `F12` or `Ctrl+Shift+I` (Windows/Linux) / `Cmd+Option+I` (Mac)
+- **Firefox**: Press `Ctrl+Shift+K` / `Cmd+Option+K`
+- **Safari**: Enable Developer Mode in Preferences, then `Option+Command+C`
+
+<Accordions>
+    <Accordion title="Enable Dev Console in CopilotKit">
+        You can enable the Dev Console by adding the `showDevConsole` prop to your `<CopilotKit>` component.
+
+        ```tsx
+        function Home() {
+            const { agent, lgcDeploymentUrl } = useModelSelectorContext();
+
+            return (
+                <CopilotKit
+                    runtimeUrl={`/api/copilotkit?lgcDeploymentUrl=${lgcDeploymentUrl ?? ""}`}
+                    showDevConsole={true}  // Enable Developer Console
+                    agent={agent}
+                >
+                    <Main />
+                </CopilotKit>
+            );
+        }
+        ```
+
+        This will enable an embedded Developer Console inside CopilotKit.
+    </Accordion>
+
+    <Accordion title="Check logs for errors">
+        If CopilotKit is not behaving as expected, open the **Console** tab in Developer Tools and look for error messages.
+
+        ```js
+        console.log("CopilotKit Debug Log:", copilotkit);
+        ```
+
+        - **Red errors** indicate execution failures.
+        - **Warnings** might indicate missing configurations.
+    </Accordion>
+
+    <Accordion title="Inspect network requests">
+        Navigate to the **Network** tab in Developer Tools to inspect API requests made by CopilotKit. Check:
+        - Requests to OpenAI or LangGraph services.
+        - Status codes (`200` = success, `401` = authentication issue).
+        - Response data received by CopilotKit.
+
+        ![Network Debug Example](../assets/dev-console-network.png)
+    </Accordion>
+
+    <Accordion title="Enable Debug Mode">
+        To get more detailed logs, enable **debug mode** in CopilotKit.
+
+        ```js
+        copilotkit.setDebugMode(true);
+        ```
+
+        This will print additional logs to the console for debugging.
+    </Accordion>
+</Accordions>
+
 ## Error: `'AzureOpenAI' object has no attribute 'bind_tools'`
 
 This error is typically due to the use of an incorrect import from LangGraph. Instead of importing `AzureOpenAI` import `AzureChatOpenAI` and your
